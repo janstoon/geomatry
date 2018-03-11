@@ -1,0 +1,18 @@
+stages:
+  - test
+
+test:linux:
+  stage: test
+  image: golang:latest
+  variables:
+    GITLAB_URL: git.samingostar.com
+    GOPATH: /go
+    PROJECT_DIR: $GOPATH/src/$GITLAB_URL/$CI_PROJECT_NAMESPACE
+  script:
+    - PROJECT_DIR=${PROJECT_DIR/samingostar\//}
+    - mkdir -p $PROJECT_DIR
+    - cp -r $CI_PROJECT_DIR $PROJECT_DIR/$CI_PROJECT_NAME
+    - cd $PROJECT_DIR/$CI_PROJECT_NAME
+    - cd $CI_PROJECT_NAME
+    - go get -v -t
+    - go test ./...

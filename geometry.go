@@ -1,24 +1,22 @@
 package geometry
 
-import "image"
-
 type Point struct {
-	X, Y int
+	X, Y float64
 }
 
 type Vector interface {
-	GetX() int
-	GetY() int
+	GetX() float64
+	GetY() float64
 }
 
 type Polygon interface {
-	Bounds() []Point
+	Coords() []Point
 }
 
 type Area interface {
 	Origin() Point
 	Shape() Polygon
-	Map() image.Image
+	MapFile() string
 }
 
 type Orientation byte
