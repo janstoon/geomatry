@@ -13,6 +13,6 @@ test:linux:
     - mkdir -p $PROJECT_DIR
     - cp -r $CI_PROJECT_DIR $PROJECT_DIR/$CI_PROJECT_NAME
     - cd $PROJECT_DIR/$CI_PROJECT_NAME
-    - cd $CI_PROJECT_NAME
     - go get -v -t
-    - go test ./...
+    - go test -cover ./...
+  coverage: '/coverage: \d+\.\d+%/'
