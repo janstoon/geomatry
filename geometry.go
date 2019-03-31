@@ -1,7 +1,6 @@
 package geometry
 
 import (
-	"image"
 	"sort"
 )
 
@@ -44,6 +43,18 @@ func (v vector) End() Point {
 	return v[1]
 }
 
+func VectorLength(v Vector) float64 {
+	// TODO: Implement
+
+	return 0
+}
+
+func VectorAngle(v Vector) float64 {
+	// TODO: Implement
+
+	return 0
+}
+
 func AddVectors(vs ... Vector) Vector {
 	// TODO: Implement
 
@@ -67,20 +78,8 @@ type Polygon interface {
 	Coords() []Point
 }
 
-func PolygonArea(p Polygon) float64 {
-	// Check if p is not actually a point or line
-	if PolygonLen(p) < 3 {
-		return 0
-	}
-
-	sp := ClockwiseSortedPolygon(p)
-	pts := sp.Coords()
-	dArea := 0.0
-	for j, i := len(pts)-1, 0; i < len(pts); j, i = i, i+1 {
-		dArea += (pts[j].X + pts[i].X) * (pts[j].Y - pts[i].Y)
-	}
-
-	return dArea / 2
+func PolygonLen(p Polygon) int {
+	return len(p.Coords())
 }
 
 func PolygonCenter(p Polygon) Point {
@@ -98,15 +97,54 @@ func PolygonCenter(p Polygon) Point {
 	return c
 }
 
-func PolygonLen(p Polygon) int {
-	return len(p.Coords())
+// Smallest Enclosing Rectangle (Minimum Bounding Box)
+func PolygonEnvelope(p Polygon) Polygon {
+	// TODO: Implement
+
+	return nil
 }
+
+func PolygonArea(p Polygon) float64 {
+	// Check if p is not actually a point or line
+	if PolygonLen(p) < 3 {
+		return 0
+	}
+
+	sp := ClockwiseSortedPolygon(p)
+	pts := sp.Coords()
+	dArea := 0.0
+	for j, i := len(pts)-1, 0; i < len(pts); j, i = i, i+1 {
+		dArea += (pts[j].X + pts[i].X) * (pts[j].Y - pts[i].Y)
+	}
+
+	return dArea / 2
+}
+
+/**
+ * --------------
+ * Simple Polygon
+ * --------------
+ */
 
 type SimplePolygon []Point
 
 func (sp SimplePolygon) Coords() []Point {
 	return []Point(sp)
 }
+
+/**
+ * ---------
+ * Rectangle
+ * ---------
+ */
+
+ // TODO: Implement a rotated rectangle
+
+/**
+ * ----------------
+ * Sortable Polygon
+ * ----------------
+ */
 
 type SortablePolygon struct {
 	coords []Point
@@ -178,37 +216,3 @@ func CounterClockwiseSortedPolygon(p Polygon) Polygon {
 
 	return sp
 }
-
-type Range interface {
-	Origin() Point
-	Shape() Polygon
-	Plan() image.Image
-}
-
-type Orientation byte
-
-const (
-	Horizontal Orientation = 1 << iota
-
-	Vertical
-)
-
-type Occupation byte
-
-const (
-	FrontRight Occupation = 1 << iota
-
-	FrontLeft
-
-	RearLeft
-
-	RearRight
-)
-
-const (
-	FullFront Occupation = FrontLeft | FrontRight
-
-	FullRear Occupation = RearLeft | RearRight
-
-	Full Occupation = FullFront | FullRear
-)
